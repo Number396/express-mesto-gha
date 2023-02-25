@@ -15,8 +15,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 });
 
 app.use('/users', users);
-app.use('/cards', cards);
-
 app.use((req, res, next) => {
   req.user = {
     _id: '63f9f37cb47cdfe983b8d637',
@@ -24,6 +22,7 @@ app.use((req, res, next) => {
 
   next();
 });
+app.use('/cards', cards);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
