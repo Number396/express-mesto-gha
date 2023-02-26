@@ -10,6 +10,7 @@ module.exports.createCard = (req, res) => {
 
 module.exports.getCards = (req, res) => {
   Card.find({})
+    .populate(['owner', 'likes'])
     .then((cards) => res.send({ data: cards }))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
