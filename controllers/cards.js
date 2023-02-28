@@ -1,4 +1,13 @@
 const Card = require('../models/cards');
+const {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+} = require('../errors/httpErros');
+
+function sendStatusMessage(res, code, message) {
+  res.status(code).send({ message });
+}
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
@@ -15,7 +24,15 @@ module.exports.getCards = (req, res) => {
   Card.find({})
     .populate(['owner', 'likes'])
     .then((cards) => res.send({ data: cards }))
-    .catch((err) => res.status(500).send({ message: err.message }));
+    .catch((err) => {
+      if (err instanceof mongoose.Error) {
+        // console.log('this is an error Name-----:', err.name);
+        // console.log('this is an error Message-----:', userValidationError);
+        sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
+        // res.status(INTERNAL_SERVER_ERROR).send({ message: defErrorMessage });
+      }
+      // res.status(500).send({ message: err.message });
+    });
 };
 
 module.exports.deletCardById = (req, res) => {
