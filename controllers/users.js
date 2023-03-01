@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { default: mongoose } = require('mongoose');
 const User = require('../models/users');
 const {
@@ -23,7 +24,7 @@ module.exports.createUser = (req, res) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        sendStatusMessage(BAD_REQUEST, userValidationError);
+        sendStatusMessage(res, BAD_REQUEST, userValidationError);
         return;
       }
 
