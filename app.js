@@ -7,7 +7,7 @@ const cards = require('./routes/cards');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
+mongoose.set('strictQuery', true);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

@@ -20,6 +20,10 @@ function sendStatusMessage(res, code, message) {
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
+  if (name === undefined || about === undefined) {
+    sendStatusMessage(res, BAD_REQUEST, userValidationError);
+    return;
+  }
   User.create({ name, about, avatar })
     .then((user) => res.send(user))
     .catch((err) => {
