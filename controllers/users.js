@@ -20,7 +20,7 @@ function sendStatusMessage(res, code, message) {
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  if (name === undefined || about === undefined) {
+  if (name === undefined || about === undefined || avatar) {
     sendStatusMessage(res, BAD_REQUEST, userValidationError);
     return;
   }
