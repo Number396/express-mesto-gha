@@ -3,7 +3,6 @@ const Card = require('../models/cards');
 const {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
 } = require('../errors/httpErros');
 
 const {
