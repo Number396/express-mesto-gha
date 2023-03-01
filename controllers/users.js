@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { default: mongoose } = require('mongoose');
 const User = require('../models/users');
 const {
@@ -25,18 +24,12 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(BAD_REQUEST, userValidationError);
-        // res.status(BAD_REQUEST).send({ message: userValidationError });
-        // console.log('this is an error Name-----:', err.name);
-        // console.log('this is an error Message-----:', userValidationError);
         return;
       }
 
       if (err instanceof mongoose.Error) {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-        // res.status(INTERNAL_SERVER_ERROR).send({ message: defErrorMessage });
       }
-
-      // res.status(500).send({ message: err.message });
     });
 };
 
@@ -45,10 +38,7 @@ module.exports.getUsers = (req, res) => {
     .then((users) => res.send(users))
     .catch((err) => {
       if (err instanceof mongoose.Error) {
-        // console.log('this is an error Name-----:', err.name);
-        // console.log('this is an error Message-----:', userValidationError);
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-        // res.status(INTERNAL_SERVER_ERROR).send({ message: defErrorMessage });
       }
     });
 };
@@ -59,13 +49,11 @@ module.exports.getUserById = (req, res) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, userFindError);
-        // res.status(BAD_REQUEST).send({ message: userFindError });
         return;
       }
 
       if (err instanceof mongoose.Error) {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-        // res.status(INTERNAL_SERVER_ERROR).send({ message: defErrorMessage });
       }
     });
 };
@@ -77,20 +65,16 @@ module.exports.updateUser = (req, res) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationUpdateError);
-        // res.status(BAD_REQUEST).send({ message: userValidationUpdateError });
-        // console.log('this is an error Name-----:', err.name);
         return;
       }
 
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, NOT_FOUND, userFindError);
-        // res.status(NOT_FOUND).send({ message: userFindError });
         return;
       }
 
       if (err instanceof mongoose.Error) {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-        // res.status(INTERNAL_SERVER_ERROR).send({ message: defErrorMessage });
       }
     });
 };
@@ -102,20 +86,16 @@ module.exports.updataAvatar = (req, res) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationAvatarError);
-        // res.status(BAD_REQUEST).send({ message: userValidationUpdateError });
-        // console.log('this is an error Name-----:', err.name);
         return;
       }
 
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, NOT_FOUND, userFindError);
-        // res.status(NOT_FOUND).send({ message: userFindError });
         return;
       }
 
       if (err instanceof mongoose.Error) {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-        // res.status(INTERNAL_SERVER_ERROR).send({ message: defErrorMessage });
       }
     });
 };

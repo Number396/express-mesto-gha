@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { default: mongoose } = require('mongoose');
 const Card = require('../models/cards');
 const {
@@ -22,7 +21,6 @@ module.exports.createCard = (req, res) => {
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
-      console.log('this is an error Name-----:', err.name);
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(BAD_REQUEST, cardValidationError);
         return;
@@ -64,7 +62,6 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((cards) => res.send(cards))
     .catch((err) => {
-      console.log('this is an error Name-----:', err.name);
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, cardFindError);
         return;
