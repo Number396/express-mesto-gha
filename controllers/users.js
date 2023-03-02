@@ -7,6 +7,7 @@ const {
   userFindError,
   userValidationUpdateError,
   userValidationAvatarError,
+  userIdError,
 } = require('../errors/badUserResponces');
 const {
   BAD_REQUEST,
@@ -53,13 +54,21 @@ module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (user == null) {
-        throw new mongoose.Error.CastError();
+        console.log('inside');
+        throw new mongoose.Error.ValidationError();
       }
       res.send(user);
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.CastError) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        console.log('validation');
         sendStatusMessage(res, NOT_FOUND, userFindError);
+        return;
+      }
+
+      if (err instanceof mongoose.Error.CastError) {
+        console.log('cast');
+        sendStatusMessage(res, BAD_REQUEST, userIdError);
         return;
       }
 

@@ -73,19 +73,18 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (card == null) {
-        throw new mongoose.Error.CastError();
+        throw new mongoose.Error.ValidationError();
       }
       res.send(card);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        sendStatusMessage(res, BAD_REQUEST, cardLikeError);
+        sendStatusMessage(res, NOT_FOUND, cardIdError);
         return;
       }
 
       if (err instanceof mongoose.Error.CastError) {
-        console.log('cats');
-        sendStatusMessage(res, NOT_FOUND, cardIdError);
+        sendStatusMessage(res, BAD_REQUEST, cardLikeError);
         return;
       }
 
@@ -99,18 +98,18 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (card == null) {
-        throw new mongoose.Error.CastError();
+        throw new mongoose.Error.ValidationError();
       }
       res.send(card);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        sendStatusMessage(res, BAD_REQUEST, cardLikeError);
+        sendStatusMessage(res, NOT_FOUND, cardIdError);
         return;
       }
 
       if (err instanceof mongoose.Error.CastError) {
-        sendStatusMessage(res, NOT_FOUND, cardIdError);
+        sendStatusMessage(res, BAD_REQUEST, cardLikeError);
         return;
       }
 
