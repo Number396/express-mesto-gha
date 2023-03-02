@@ -49,8 +49,14 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
+  console.log(req.params.userId);
   User.findById(req.params.userId)
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (user == null) {
+        throw new mongoose.Error.CastError();
+      }
+      res.send(user);
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, userFindError);
@@ -66,7 +72,12 @@ module.exports.getUserById = (req, res) => {
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (user == null) {
+        throw new mongoose.Error.CastError();
+      }
+      res.send(user);
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationUpdateError);
@@ -87,7 +98,13 @@ module.exports.updateUser = (req, res) => {
 module.exports.updataAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (user == null) {
+        console.log('inside11:');
+        throw new mongoose.Error.CastError();
+      }
+      res.send(user);
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationAvatarError);
