@@ -100,7 +100,6 @@ module.exports.updataAvatar = (req, res) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user == null) {
-        console.log('inside11:');
         throw new mongoose.Error.CastError();
       }
       res.send(user);
