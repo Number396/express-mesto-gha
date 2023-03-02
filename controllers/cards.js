@@ -84,6 +84,7 @@ module.exports.likeCard = (req, res) => {
       }
 
       if (err instanceof mongoose.Error.CastError) {
+        console.log('cats');
         sendStatusMessage(res, NOT_FOUND, cardIdError);
         return;
       }

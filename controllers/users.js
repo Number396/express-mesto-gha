@@ -59,7 +59,7 @@ module.exports.getUserById = (req, res) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        sendStatusMessage(res, BAD_REQUEST, userFindError);
+        sendStatusMessage(res, NOT_FOUND, userFindError);
         return;
       }
 
