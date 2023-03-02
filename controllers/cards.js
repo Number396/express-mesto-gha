@@ -53,13 +53,18 @@ module.exports.deleteCardById = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (card == null) {
-        throw new mongoose.Error.CastError();
+        throw new mongoose.Error.ValidationError();
       }
       res.send(card);
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.CastError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, NOT_FOUND, cardFindError);
+        return;
+      }
+
+      if (err instanceof mongoose.Error.CastError) {
+        sendStatusMessage(res, BAD_REQUEST, cardIdError);
         return;
       }
 
