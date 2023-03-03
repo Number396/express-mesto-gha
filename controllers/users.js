@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { default: mongoose } = require('mongoose');
 const User = require('../models/users');
 const {
@@ -21,10 +20,6 @@ function sendStatusMessage(res, code, message) {
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  // if (name === undefined || about === undefined || avatar === undefined) {
-  //   sendStatusMessage(res, BAD_REQUEST, userValidationError);
-  //   return;
-  // }
   User.create({ name, about, avatar })
     .then((user) => res.send(user))
     .catch((err) => {
@@ -54,21 +49,11 @@ module.exports.getUserById = (req, res) => {
       res.send(user);
     })
     .catch((err) => {
-      // if (err instanceof mongoose.Error.ValidationError) {
-      //   console.log('validation');
-      //   sendStatusMessage(res, NOT_FOUND, userFindError);
-      //   return;
-      // }
-
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, userIdError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error) {
-      // }
     });
 };
 
@@ -77,7 +62,6 @@ module.exports.updateUser = (req, res) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (user == null) {
-        // throw new mongoose.Error.CastError();
         sendStatusMessage(res, NOT_FOUND, userFindError);
         return;
       }
@@ -86,19 +70,9 @@ module.exports.updateUser = (req, res) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationUpdateError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error.CastError) {
-      //   sendStatusMessage(res, NOT_FOUND, userFindError);
-      //   return;
-      // }
-
-      // if (err instanceof mongoose.Error) {
-      //   sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };
 
@@ -115,18 +89,8 @@ module.exports.updataAvatar = (req, res) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationAvatarError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error.CastError) {
-      //   sendStatusMessage(res, NOT_FOUND, userFindError);
-      //   return;
-      // }
-
-      // if (err instanceof mongoose.Error) {
-      //   sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };

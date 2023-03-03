@@ -20,23 +20,14 @@ function sendStatusMessage(res, code, message) {
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
-  // if (name === undefined || link === undefined) {
-  //   sendStatusMessage(res, BAD_REQUEST, cardValidationError);
-  //   return;
-  // }
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, cardValidationError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error) {
-      //   sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };
 
@@ -46,9 +37,6 @@ module.exports.getCards = (req, res) => {
     .then((card) => res.send(card))
     .catch(() => {
       sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // if (err instanceof mongoose.Error) {
-      //   sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };
 
@@ -56,28 +44,17 @@ module.exports.deleteCardById = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (card == null) {
-        // throw new mongoose.Error.ValidationError();
         sendStatusMessage(res, NOT_FOUND, cardFindError);
         return;
       }
       res.send(card);
     })
     .catch((err) => {
-      // if (err instanceof mongoose.Error.ValidationError) {
-      //   sendStatusMessage(res, NOT_FOUND, cardFindError);
-      //   return;
-      // }
-
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, cardIdError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error) {
-      //   // sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };
 
@@ -85,28 +62,17 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (card == null) {
-        // throw new mongoose.Error.ValidationError();
         sendStatusMessage(res, NOT_FOUND, cardFindError);
         return;
       }
       res.send(card);
     })
     .catch((err) => {
-      // if (err instanceof mongoose.Error.ValidationError) {
-      //   sendStatusMessage(res, NOT_FOUND, cardIdError);
-      //   return;
-      // }
-
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, cardLikeError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error) {
-      //   sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };
 
@@ -114,27 +80,16 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (card == null) {
-        // throw new mongoose.Error.ValidationError();
         sendStatusMessage(res, NOT_FOUND, cardFindError);
         return;
       }
       res.send(card);
     })
     .catch((err) => {
-      // if (err instanceof mongoose.Error.ValidationError) {
-      //   sendStatusMessage(res, NOT_FOUND, cardIdError);
-      //   return;
-      // }
-
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, cardLikeError);
-        // return;
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
       }
-
-      // if (err instanceof mongoose.Error) {
-      //   sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
-      // }
     });
 };
