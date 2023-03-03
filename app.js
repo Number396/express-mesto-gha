@@ -25,8 +25,6 @@ app.use((req, res, next) => {
 app.use('/users', users);
 app.use('/cards', cards);
 app.use((req, res, next) => {
-  // res.status(404);
-  // res.json({ message: 'Route not found' });
   res.status(404).send({ message: 'Route not found' });
   next();
 });
