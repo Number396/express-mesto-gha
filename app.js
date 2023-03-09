@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+// const validator = require('validator');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 
@@ -17,7 +18,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '63f9f37cb47cdfe983b8d637',
+    _id: '640a1e2af504925872d653c0',
   };
 
   next();

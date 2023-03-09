@@ -19,10 +19,16 @@ function sendStatusMessage(res, code, message) {
 }
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+  console.log(name, about, avatar, email, password);
+  User.create({
+    name, about, avatar, email, password,
+  })
     .then((user) => res.send(user))
     .catch((err) => {
+      console.log(err.name);
       if (err instanceof mongoose.Error.ValidationError) {
         sendStatusMessage(res, BAD_REQUEST, userValidationError);
       } else {
