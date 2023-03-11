@@ -62,7 +62,7 @@ module.exports.login = (req, res) => {
     }))
     .then((user) => {
       const jwt = jsonwebtoken.sign({ _id: user._id }, 'secret_code', { expiresIn: '7d' });
-      res.send({ jwt });
+      res.send({ token: jwt });
     })
     // .catch(next);
     .catch((err) => {
@@ -71,6 +71,11 @@ module.exports.login = (req, res) => {
       // sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
     });
 };
+
+// module.exports.getCurrentUser = (req, res) => {
+//   console.log(req.user);
+//   res.status(200).send({ message: 'ehf' });
+// };
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -81,7 +86,8 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
-  User.findById(req.params.userId)
+  // console.log(req.user);
+  User.findById(req.user._id)
     .then((user) => {
       if (user == null) {
         sendStatusMessage(res, NOT_FOUND, userFindError);
@@ -91,6 +97,7 @@ module.exports.getUserById = (req, res) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
+        console.log('inside getUserById ');
         sendStatusMessage(res, BAD_REQUEST, userIdError);
       } else {
         sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
@@ -119,7 +126,7 @@ module.exports.updateUser = (req, res) => {
 
 module.exports.updataAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: false })
     .then((user) => {
       if (user == null) {
         sendStatusMessage(res, NOT_FOUND, userFindError);
