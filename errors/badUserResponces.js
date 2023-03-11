@@ -4,6 +4,8 @@ const userFindError = 'Пользователь с указанным id не н
 const userIdError = 'Переданы некорректные данные id';
 const userValidationUpdateError = 'Переданы некорректные данные при обновлении профиля';
 const userValidationAvatarError = 'Переданы некорректные данные при обновлении аватара';
+const userEmailConflictError = 'При регистрации указан email, который уже существует на сервере.';
+const userAuthError = 'Передан неверный логин или пароль';
 
 module.exports = {
   userValidationError,
@@ -12,4 +14,6 @@ module.exports = {
   userValidationUpdateError,
   userValidationAvatarError,
   userIdError,
+  userEmailConflictError,
+  userAuthError,
 };

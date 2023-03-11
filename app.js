@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 // const validator = require('validator');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
+const { login, createUser } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -25,6 +26,8 @@ app.use((req, res, next) => {
 });
 app.use('/users', users);
 app.use('/cards', cards);
+app.post('/signin', login);
+app.post('/signup', createUser);
 app.use((req, res, next) => {
   res.status(404).send({ message: 'Route not found' });
   next();

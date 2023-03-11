@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const emailValidator = require('validator');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator(val) {
-        return emailValidator.isEmail(val);
+        return validator.isEmail(val);
       },
       message: 'неверный email',
     },
