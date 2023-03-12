@@ -4,6 +4,7 @@ const {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
+  FORBIDDEN,
 } = require('../errors/httpErros');
 
 const {
@@ -12,6 +13,7 @@ const {
   cardFindError,
   cardLikeError,
   cardIdError,
+  cardDeleteError,
 } = require('../errors/badCardResponces');
 
 function sendStatusMessage(res, code, message) {
@@ -41,15 +43,29 @@ module.exports.getCards = (req, res) => {
 };
 
 module.exports.deleteCardById = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findOne({ _id: req.params.cardId })
+    .orFail(() => new mongoose.Error(cardFindError))
     .then((card) => {
-      if (card == null) {
-        sendStatusMessage(res, NOT_FOUND, cardFindError);
-        return;
+      console.log(req.user._id, ':', card.owner.valueOf());
+      if (req.user._id !== card.owner.valueOf()) {
+        throw new mongoose.Error.ValidationError();
       }
-      res.send(card);
+      Card.findByIdAndRemove(req.params.cardId)
+        .then(() => {
+          res.send(card);
+        });
     })
     .catch((err) => {
+      console.log(err.name, err.code, err.message);
+      if (err instanceof mongoose.Error.ValidationError) {
+        sendStatusMessage(res, FORBIDDEN, cardDeleteError);
+        return;
+      }
+
+      if (err instanceof mongoose.Error) {
+        sendStatusMessage(res, NOT_FOUND, err.message);
+        return;
+      }
       if (err instanceof mongoose.Error.CastError) {
         sendStatusMessage(res, BAD_REQUEST, cardIdError);
       } else {
