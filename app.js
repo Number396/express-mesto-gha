@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
+const errorHandler = require('./middlewares/error-handler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
   res.status(404).send({ message: 'Route not found' });
   next();
 });
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
