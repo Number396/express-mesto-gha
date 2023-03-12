@@ -50,9 +50,7 @@ module.exports.createUser = (req, res) => {
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email })
-    // .orFail(() => sendStatusMessage(res, UNAUTHORIZED, userAuthError))
-    // .orFail(() => res.status(404).send({ message: 'Пользователь не найден' }))
+  User.findOne({ email }).select('+password')
     .orFail(() => new Error(userAuthError))
     .then((user) => bcryptjs.compare(password, user.password).then((matched) => {
       if (matched) {
@@ -71,11 +69,6 @@ module.exports.login = (req, res) => {
       // sendStatusMessage(res, INTERNAL_SERVER_ERROR, defErrorMessage);
     });
 };
-
-// module.exports.getCurrentUser = (req, res) => {
-//   console.log(req.user);
-//   res.status(200).send({ message: 'ehf' });
-// };
 
 module.exports.getUsers = (req, res) => {
   User.find({})
