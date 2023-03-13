@@ -38,6 +38,7 @@ module.exports.createUser = (req, res, next) => {
 
   bcryptjs.hash(password, 10)
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
+    .then((user) => User.findById(user._id.valueOf()))
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === 11000) {
