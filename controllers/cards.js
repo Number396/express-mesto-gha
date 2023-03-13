@@ -31,6 +31,7 @@ module.exports.createCard = (req, res, next) => {
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
+      // to do  нужно вроде как удалить по тз если валидаця через celebrate
       if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError(cardValidationError));
         // sendStatusMessage(res, BAD_REQUEST, cardValidationError);
