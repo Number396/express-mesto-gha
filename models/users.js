@@ -40,4 +40,3 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('user', userSchema);
-// /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm,
