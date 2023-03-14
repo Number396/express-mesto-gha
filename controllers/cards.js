@@ -40,7 +40,6 @@ module.exports.deleteCardById = (req, res, next) => {
       throw new NotFoundError(cardFindError);
     })
     .then((card) => {
-      console.log(req.user._id, ':', card.owner.valueOf());
       if (req.user._id !== card.owner.valueOf()) {
         throw new ForbiddenError(cardDeleteError);
       }
@@ -50,7 +49,6 @@ module.exports.deleteCardById = (req, res, next) => {
         });
     })
     .catch((err) => {
-      console.log(err.name, err.code, err.message);
       if (err instanceof mongoose.Error.CastError) {
         next(new BadRequestError(cardIdError));
       } else {
