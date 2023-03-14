@@ -8,7 +8,7 @@ const {
 } = require('../controllers/users');
 const { auth } = require('../middlewares/auth');
 
-// router.get('/:userId', getUserById); такого запроса нет на фронте + появился users/me
+// router.get('/:userId', getUserById); такого запроса нет на фронте и есть get запрос на  users/me
 router.get('/', auth, getUsers);
 
 router.get('/me', celebrate({
