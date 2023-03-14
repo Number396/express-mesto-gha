@@ -37,8 +37,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(errors());
 app.use(errorHandler);
+app.use(errors());
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
