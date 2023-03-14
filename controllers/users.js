@@ -140,7 +140,7 @@ module.exports.updateUser = (req, res, next) => {
 
 module.exports.updataAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: false })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user == null) {
         console.log('inside if null');
@@ -151,7 +151,7 @@ module.exports.updataAvatar = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      console.log('inside catch update avatar');
+      console.log('-inside catch update avatar');
       if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError(userValidationAvatarError));
         // sendStatusMessage(res, BAD_REQUEST, userValidationAvatarError);
