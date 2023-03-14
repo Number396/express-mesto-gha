@@ -29,15 +29,12 @@ module.exports.createUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === 11000) {
-        console.log('inside 11000');
         next(new ConflictError(userEmailConflictError));
         return;
       }
       if (err instanceof mongoose.Error.ValidationError) {
-        console.log('inside Validation');
         next(new BadRequestError(userValidationError));
       } else {
-        console.log('500');
         next(err);
       }
     });
@@ -60,7 +57,6 @@ module.exports.login = (req, res, next) => {
       res.send({ token: jwt });
     })
     .catch((err) => {
-      console.log('inside catch:', err.name);
       next(err);
     });
 };
@@ -113,17 +109,14 @@ module.exports.updataAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user == null) {
-        console.log('inside if null');
         throw new NotFoundError(userFindError);
       }
       res.send(user);
     })
     .catch((err) => {
-      console.log('-inside catch update avatar');
       if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError(userValidationAvatarError));
       } else {
-        console.log(err.name);
         next(err);
       }
     });
