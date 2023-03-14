@@ -10,8 +10,6 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).send({ message });
 
-  // res.status(err.statusCode).send({ message: err.message });
-
   next();
 };
 
