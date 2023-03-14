@@ -8,7 +8,7 @@ const {
 } = require('../controllers/users');
 const { auth } = require('../middlewares/auth');
 
-// router.get('/:userId', getUserById);
+// router.get('/:userId', getUserById); такого запроса нет на фронте + есть users/me
 // router.post('/', createUser);
 router.get('/', auth, getUsers);
 
